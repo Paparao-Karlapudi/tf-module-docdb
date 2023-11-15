@@ -37,16 +37,16 @@ resource "aws_docdb_cluster" "docdb" {
   master_username         = data.aws_ssm_parameter.DB_ADMIN_USER.value
   master_password         = data.aws_ssm_parameter.DB_ADMIN_PASS.value
   skip_final_snapshot     = true
-  db_subnet_group_name = aws_docdb_subnet_group.default.name
-  vpc_security_group_ids = [aws_security_group.docdb.id]
+  db_subnet_group_name    = aws_docdb_subnet_group.default.name
+  vpc_security_group_ids  = [aws_security_group.docdb.id]
 
   tags = merge(local.common_tags, { Name = "${var.env}-docdb-cluster" } )
 
 }
 resource "aws_docdb_cluster_instance" "cluster_instances" {
-  count              = var.number_of_instances
-  identifier         = "${var.env}-docdb-cluster-instance-${count.index}"
-  cluster_identifier = aws_docdb_cluster.default.id
+  count              = var.number_of_instance
+  identifier         = "${var.env}-docdb-cluster-instance-${count.index+1}"
+  cluster_identifier = aws_docdb_cluster.docdb.id
   instance_class     = var.instance_class
   tags = merge(local.common_tags, { Name = "${var.env}-docdb-cluster-instance-${count.index}" } )
 
