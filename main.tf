@@ -71,4 +71,5 @@ resource "aws_ssm_parameter" "docdb_url" {
   name  = "${var.env}.user.DOCDB_URL"
   type  = "String"
   value = aws_docdb_cluster.docdb.endpoint
+  overwrite = true
 }
